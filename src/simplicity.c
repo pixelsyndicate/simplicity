@@ -10,6 +10,8 @@ void line_layer_update_callback(Layer *layer, GContext* ctx) {
   graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
 }
 
+// this is an event handler, as defined in 
+//  tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
 void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
   // Need to be static because they're used by the system later.
   static char time_text[] = "00:00";
@@ -68,6 +70,7 @@ void handle_init(void) {
   layer_set_update_proc(line_layer, line_layer_update_callback);
   layer_add_child(window_layer, line_layer);
 
+  // set up an event handler for when a minute changes
   tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
   // TODO: Update display here to avoid blank display on launch?
 }
